@@ -1,5 +1,11 @@
 # Havoc Vector Library
-Gamesense LuaJIT API based Vector and Angle library. 
+Gamesense LuaJIT API based Vector and Angle library.
+
+Author credits:-
+* Kessie Heldieheren
+* halflifefan
+* Localplayer
+* sapphyrus
 
 # Angle
 ## Create an angle
