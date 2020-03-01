@@ -443,7 +443,7 @@ Trace line to another vector and returns the fraction, entity, and the impact po
 	(function(number: eid): boolean): callback
 ): number, number, vector_c
 ```
-Trace line to another vector, skipping any entity indices returned by the callback and return the fraction, entity, and the impact point.
+Trace line to another vector, skipping any entity indices returned by the callback and returns the fraction, entity, and the impact point.
 
 Callback should return true or false if the entity index given should be skipped or not skipped.
 ***
