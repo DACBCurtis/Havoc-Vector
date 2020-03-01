@@ -32,8 +32,8 @@ ffi.cdef[[
     typedef bool(__thiscall* lgts)(float, float, float, float, float, float, short);
 ]]
 
-local match = client.find_signature("client_panorama.dll", "\x55\x8B\xEC\x83\xEC\x08\x8B\x15\xCC\xCC\xCC\xCC\x0F\x57")
-local line_goes_through_smoke = ffi.cast("lgts", match)
+local client_panorama_match = client.find_signature("client_panorama.dll", "\x55\x8B\xEC\x83\xEC\x08\x8B\x15\xCC\xCC\xCC\xCC\x0F\x57")
+local line_goes_through_smoke = ffi.cast("lgts", client_panorama_match)
 --endregion
 
 --region math
@@ -1041,10 +1041,10 @@ end
 
 --- Traces a line from source to destination and returns the fraction, entity, and the impact point.
 --- @param destination vector_c
---- @param skip_entindex table
+--- @param skip_classes table
 --- @param skip_distance number
 --- @return number, number
-function vector_c:trace_line_skip_class(destination, skip_entindex, skip_distance)
+function vector_c:trace_line_skip_class(destination, skip_classes, skip_distance)
 	local should_skip = function(index, skip_entity)
 		local class_name = entity.get_classname(index) or ""
 		for i in 1, #skip_entity do
@@ -1067,7 +1067,7 @@ function vector_c:trace_line_skip_class(destination, skip_entindex, skip_distanc
 		if fraction == 1 and hit_entity == -1 then  -- If we didn't hit anything.
 			return 1, -1  -- return nothing.
 		else  -- BOIS WE HIT SOMETHING.
-			if should_skip(hit_entity, skip_entindex) then  -- If entity should be skipped.
+			if should_skip(hit_entity, skip_classes) then  -- If entity should be skipped.
 				-- Set last traced position according to fraction.
 				last_traced_position = vector_internal_division(self, destination, fraction, 1 - fraction)
 
