@@ -451,7 +451,7 @@ Callback should return true or false if the entity index given should be skipped
 ```
 :trace_line_skip_class(
 	vector_c: destination,
-	number: skip_entindex,
+	table<any, string>: skip_classes,
 	number: skip_distance
 ): 
 ```
