@@ -1,4 +1,4 @@
---region dependency: havoc_vector_3_0_0
+--region dependency: havoc_vector_3_0_1
 --[[
 THIS LICENSE MUST NOT BE REMOVED.
 
@@ -28,12 +28,17 @@ SOFTWARE.
 --region ffi
 local ffi = require("ffi")
 
-ffi.cdef[[
-    typedef bool(__thiscall* lgts)(float, float, float, float, float, float, short);
-]]
+local line_goes_through_smoke
 
-local client_panorama_match = client.find_signature("client_panorama.dll", "\x55\x8B\xEC\x83\xEC\x08\x8B\x15\xCC\xCC\xCC\xCC\x0F\x57")
-local line_goes_through_smoke = ffi.cast("lgts", client_panorama_match)
+do
+	local success, match = client.find_signature("client_panorama.dll", "\x55\x8B\xEC\x83\xEC\x08\x8B\x15\xCC\xCC\xCC\xCC\x0F\x57")
+
+	if success and match ~= nil then
+		local lgts_type = ffi.typeof("bool(__thiscall*)(float, float, float, float, float, float, short);")
+
+		line_goes_through_smoke = ffi.cast(lgts_type, match)
+	end
+end
 --endregion
 
 --region math
@@ -1192,6 +1197,10 @@ end
 --- @param ray_end vector_c
 --- @return boolean
 function vector_c:ray_intersects_smoke(ray_end)
+	if (line_goes_through_smoke == nil) then
+		error("Unsafe scripts must be allowed in order to use vector_c:ray_intersects_smoke")
+	end
+
 	return line_goes_through_smoke(self.x, self.y, self.z, ray_end.x, ray_end.y, ray_end.z, 1)
 end
 
@@ -1513,11 +1522,10 @@ end
 --- @param eid number
 --- @return vector_c
 function vector_c.eye_position(eid)
-	local origin = vector(entity.get_prop(eid, "m_vecOrigin", 3))
-	local _, _, view_z = entity.get_prop(eid, "m_vecViewOffset")
-	local duck_amount = entity.get_prop(eid, "m_flDuckAmount")
+	local origin = vector(entity.get_origin(eid))
+	local duck_amount = entity.get_prop(eid, "m_flDuckAmount") or 0
 
-	origin.z = origin.z + view_z - duck_amount * 16
+	origin.z = origin.z + 46 + (1 - duck_amount) * 18
 
 	return origin
 end
