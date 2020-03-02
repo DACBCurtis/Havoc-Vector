@@ -43,6 +43,16 @@ Set the angles. Nil will leave the angle unchanged.
 ***
 
 ```
+:offset(
+	number|nil: p,
+	number|nil: y,
+	number|nil: r
+): angle_c
+```
+Offset the angles. 0 leaves the angle unchanged.
+***
+
+```
 :clone(): angle_c
 ```
 Clone the angle object.
@@ -55,7 +65,7 @@ Clone the angle object.
 	number|nil: r
 ): angle_c
 ```
-Clone and offset the angles. Nil values leave the angle unchanged.
+Clone and offset the angles. 0 leaves the angle unchanged.
 ***
 
 ```
@@ -199,6 +209,16 @@ Set the vector. Nil will leave the axis unchanged.
 ***
 
 ```
+:clone_offset(
+	number|nil: p_offset,
+	number|nil: y_offset,
+	number|nil: r_offset
+): vector_c
+```
+Offset the vector. 0 leaves the vector unchanged.
+***
+
+```
 :clone(): vector_c
 ```
 Clone the vector object.
@@ -211,7 +231,7 @@ Clone the vector object.
 	number|nil: r_offset
 ): vector_c
 ```
-Clone and offset the vector. Nil values leave the vector unchanged.
+Clone and offset the vector. 0 leaves the vector unchanged.
 ***
 
 ```
